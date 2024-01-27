@@ -98,7 +98,6 @@ const Cryptos = () => {
     });
   }
 
-  console.log(matches);
   return (
     <Container>
       <Main>
