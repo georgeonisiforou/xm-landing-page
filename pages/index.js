@@ -6,6 +6,7 @@ import Hero from "@/components/Hero";
 import Cryptos from "@/components/Cryptos";
 import WhyTrade from "@/components/WhyTrade";
 import Registration from "@/components/Registration";
+import EventGallery from "@/components/EventGallery";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -28,6 +29,7 @@ export default function Home() {
           <WhyTrade />
 
           <Registration />
+          <EventGallery />
         </MainContainer>
       </>
     </>

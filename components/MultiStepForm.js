@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
+import { useWindowSize } from "usehooks-ts";
 
 const Container = styled.div`
   width: 100%;
@@ -78,6 +79,7 @@ const Fields = styled.div`
   display: flex;
   gap: 1rem;
   width: 100%;
+  flex-wrap: wrap;
 `;
 
 const FieldContainer = styled.div`
@@ -87,6 +89,7 @@ const FieldContainer = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   flex: 1;
+  min-width: 300px;
 `;
 
 const Field = styled.input`
@@ -177,7 +180,7 @@ const MultiStepForm = () => {
 
   const [lineStep, setLineStep] = useState(0);
 
-  console.log(lineStep);
+  const { width } = useWindowSize();
 
   const validationsArray = [
     [
@@ -230,7 +233,71 @@ const MultiStepForm = () => {
 
   return (
     <Container>
-      <StepsContainer>
+      {width > 400 ? (
+        <StepsContainer>
+          <Step>
+            <StepTitle>
+              <StepNumberContainer
+                style={{
+                  borderColor: lineStep >= 1 && "#29A643",
+                }}
+              >
+                <StepNumber
+                  style={{
+                    backgroundColor: lineStep >= 1 && "#29A643",
+                  }}
+                >
+                  1
+                </StepNumber>
+              </StepNumberContainer>
+              <p>Step 1</p>
+            </StepTitle>
+            <StepLine currentStep={currentStep}>
+              <HalfLine
+                style={{
+                  backgroundColor: lineStep >= 1 && "#29A643",
+                }}
+              />
+              <HalfLine
+                style={{
+                  backgroundColor: lineStep >= 2 && "#29A643",
+                }}
+              />
+            </StepLine>
+          </Step>
+          <Step>
+            {" "}
+            <StepTitle>
+              <StepNumberContainer
+                style={{
+                  borderColor: lineStep >= 2 && "#29A643",
+                }}
+              >
+                <StepNumber
+                  style={{
+                    backgroundColor: lineStep >= 2 && "#29A643",
+                  }}
+                >
+                  2
+                </StepNumber>
+              </StepNumberContainer>
+              <p>Step 2</p>
+            </StepTitle>
+            <StepLine currentStep={currentStep}>
+              <HalfLine
+                style={{
+                  backgroundColor: lineStep >= 3 && "#29A643",
+                }}
+              />
+              <HalfLine
+                style={{
+                  backgroundColor: lineStep >= 4 && "#29A643",
+                }}
+              />
+            </StepLine>
+          </Step>
+        </StepsContainer>
+      ) : currentStep === 0 ? (
         <Step>
           <StepTitle>
             <StepNumberContainer
@@ -261,6 +328,7 @@ const MultiStepForm = () => {
             />
           </StepLine>
         </Step>
+      ) : (
         <Step>
           {" "}
           <StepTitle>
@@ -292,7 +360,8 @@ const MultiStepForm = () => {
             />
           </StepLine>
         </Step>
-      </StepsContainer>
+      )}
+
       {currentStep !== 2 ? (
         <Formik
           validationSchema={userSchema}

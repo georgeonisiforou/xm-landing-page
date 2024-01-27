@@ -4,6 +4,11 @@ import { useQueryClient, useQuery } from "react-query";
 import axios from "axios";
 import { useState } from "react";
 import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleChevronUp,
+  faCircleChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div`
   width: 100%;
@@ -69,7 +74,9 @@ const GreyLine = styled.div`
 const PercentChange = styled.div`
   display: flex;
   font-size: 14px;
-  color: #b1ffc2;
+  color: ${({ color }) => color};
+  align-items: center;
+  gap: 8px;
 `;
 
 const Cryptos = () => {
@@ -118,13 +125,20 @@ const Cryptos = () => {
               </CardTitle>
               <GreyLine />
               <p>${item.price_usd}</p>
-              <PercentChange>
-                <Image
-                  alt="chevron"
-                  src="/images/chevron.png"
-                  width={6}
-                  height={11}
-                />
+              <PercentChange
+                color={item.percent_change_24h > 0 ? "#b1ffc2" : "#FFA3A6"}
+              >
+                {item.percent_change_24h > 0 ? (
+                  <FontAwesomeIcon
+                    icon={faCircleChevronUp}
+                    style={{ width: "10px", height: "10px" }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faCircleChevronDown}
+                    style={{ width: "10px", height: "10px" }}
+                  />
+                )}
                 {item.percent_change_24h}%
               </PercentChange>
             </Card>
