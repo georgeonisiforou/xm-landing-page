@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleDot } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleDot,
+  faCircleCheck,
+  faPlay,
+} from "@fortawesome/free-solid-svg-icons";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 
@@ -25,6 +29,7 @@ const Step = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+
   gap: 1rem;
 `;
 
@@ -112,11 +117,6 @@ const ValidationMessage = styled.div`
   gap: 1rem;
 `;
 
-const Error = styled.div`
-  color: red;
-  width: 100%;
-`;
-
 const Btn = styled.button`
   width: clamp(280px, 50vw, 345px);
   margin: 0 auto;
@@ -130,127 +130,54 @@ const Btn = styled.button`
   text-transform: uppercase;
   font-family: "Bebas Neue", sans-serif;
   cursor: pointer;
+
+  &:disabled {
+    background-color: #cccccc;
+  }
 `;
 
-const FirstStep = ({ formData, setFormData, lineStep, setLineStep }) => {
-  return (
-    <>
-      <FieldContainer>
-        <p>Full Name:</p>
-        <Field
-          placeholder="Full Name"
-          name="fullName"
-          type="text"
-          value={formData.fullName}
-          onChange={(e) => {
-            setFormData({ ...formData, [e.target.name]: e.target.value });
-            if (e.target.value !== "") {
-              setLineStep(1);
-            }
-          }}
-        />
-        <ValidationContainer></ValidationContainer>
-      </FieldContainer>
-      <FieldContainer>
-        <p>Date of Birth:</p>
-        <Field
-          type="date"
-          name="dob"
-          value={formData.dob}
-          onChange={(e) => {
-            setFormData({ ...formData, [e.target.name]: e.target.value });
-            if (e.target.value !== "") {
-              setLineStep(1);
-            }
-          }}
-        />
-        <ValidationContainer>
-          <ValidationMessage>
-            <FontAwesomeIcon
-              icon={faCircleDot}
-              style={{ width: "9px", height: "9px" }}
-            />
-          </ValidationMessage>
-        </ValidationContainer>
-      </FieldContainer>
-    </>
-  );
-};
+const SuccessContainer = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  max-width: 825px;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  background-color: #f3fef4;
+  border: 1px solid #31b63b;
+  padding: 3rem 1rem;
+  justify-content: center;
+`;
 
-const SecondStep = ({ formData, setFormData, setLineStep }) => {
-  return (
-    <>
-      <FieldContainer>
-        <p>Email:</p>
-        <Field
-          placeholder="Email"
-          name="email"
-          type="text"
-          value={formData.email}
-          onChange={(e) => {
-            setFormData({ ...formData, [e.target.name]: e.target.value });
-            if (e.target.value !== "") {
-              setLineStep(3);
-            }
-          }}
-        />
-        <ValidationContainer></ValidationContainer>
-      </FieldContainer>
-      <FieldContainer>
-        <p>Password:</p>
-        <Field
-          type="text"
-          placeholder="Password"
-          name="password"
-          value={formData.password}
-          onChange={(e) => {
-            setFormData({ ...formData, [e.target.name]: e.target.value });
-            if (e.target.value !== "") {
-              setLineStep(3);
-            }
-          }}
-        />
-        <ValidationContainer>
-          <ValidationMessage>
-            <FontAwesomeIcon
-              icon={faCircleDot}
-              style={{ width: "9px", height: "9px" }}
-            />
-          </ValidationMessage>
-        </ValidationContainer>
-      </FieldContainer>
-    </>
-  );
-};
+const SuccessTitle = styled.div`
+  display: flex;
+  gap: 1rem;
+  font-size: 24px;
+  color: #3c763d;
+  align-items: center;
+`;
+
+const SuccessMsg = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  color: #3c763d;
+  font-size: 14px;
+`;
+
+const SmallTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 auto;
+`;
 
 const MultiStepForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState({
-    fullName: "",
-    dob: "",
-    email: "",
-    password: "",
-  });
+
   const [lineStep, setLineStep] = useState(0);
 
   console.log(lineStep);
-
-  const steps = [
-    <FirstStep
-      key={0}
-      formData={formData}
-      setFormData={setFormData}
-      lineStep={lineStep}
-      setLineStep={setLineStep}
-    />,
-    <SecondStep
-      key={1}
-      formData={formData}
-      setFormData={setFormData}
-      lineStep={lineStep}
-      setLineStep={setLineStep}
-    />,
-  ];
 
   const validationsArray = [
     [
@@ -267,13 +194,6 @@ const MultiStepForm = () => {
 
     ["Valid email format"],
   ];
-
-  const changeStep = () => {
-    if (currentStep === 0) {
-      setCurrentStep(1);
-      setLineStep(2);
-    }
-  };
 
   const buttonSteps = [
     { id: 0, text: "continue" },
@@ -313,22 +233,30 @@ const MultiStepForm = () => {
       <StepsContainer>
         <Step>
           <StepTitle>
-            <StepNumberContainer>
-              <StepNumber>1</StepNumber>
+            <StepNumberContainer
+              style={{
+                borderColor: lineStep >= 1 && "#29A643",
+              }}
+            >
+              <StepNumber
+                style={{
+                  backgroundColor: lineStep >= 1 && "#29A643",
+                }}
+              >
+                1
+              </StepNumber>
             </StepNumberContainer>
             <p>Step 1</p>
           </StepTitle>
           <StepLine currentStep={currentStep}>
             <HalfLine
               style={{
-                backgroundColor:
-                  currentStep === 0 || (lineStep >= 1 && "#29A643"),
+                backgroundColor: lineStep >= 1 && "#29A643",
               }}
             />
             <HalfLine
               style={{
-                backgroundColor:
-                  currentStep === 1 && lineStep >= 2 && "#29A643",
+                backgroundColor: lineStep >= 2 && "#29A643",
               }}
             />
           </StepLine>
@@ -336,177 +264,258 @@ const MultiStepForm = () => {
         <Step>
           {" "}
           <StepTitle>
-            <StepNumberContainer>
-              <StepNumber>2</StepNumber>
+            <StepNumberContainer
+              style={{
+                borderColor: lineStep >= 2 && "#29A643",
+              }}
+            >
+              <StepNumber
+                style={{
+                  backgroundColor: lineStep >= 2 && "#29A643",
+                }}
+              >
+                2
+              </StepNumber>
             </StepNumberContainer>
             <p>Step 2</p>
           </StepTitle>
           <StepLine currentStep={currentStep}>
             <HalfLine
               style={{
-                backgroundColor:
-                  currentStep === 1 && lineStep >= 3 && "#29A643",
+                backgroundColor: lineStep >= 3 && "#29A643",
               }}
             />
             <HalfLine
               style={{
-                backgroundColor:
-                  currentStep === 1 && lineStep >= 4 && "#29A643",
+                backgroundColor: lineStep >= 4 && "#29A643",
               }}
             />
           </StepLine>
         </Step>
       </StepsContainer>
-      <Formik
-        validationSchema={userSchema}
-        initialValues={{ fullName: "", dob: "", email: "", password: "" }}
-        onSubmit={() => {}}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-        }) => (
-          <CustomForm>
-            <Fields>
-              <FieldContainer>
-                <p>Full Name:</p>
-                <Field
-                  placeholder="Full Name"
-                  name="fullName"
-                  type="text"
-                  value={values.fullName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {touched.fullName ? (
-                  <ValidationContainer
-                    color={
-                      errors.fullName && touched.fullName
-                        ? "#959595"
-                        : "#29A643"
-                    }
-                  >
-                    {validationsArray[1].map((item, idx) => {
-                      return (
-                        <ValidationMessage key={idx}>
-                          <FontAwesomeIcon
-                            icon={faCircleDot}
-                            style={{ width: "9px", height: "9px" }}
-                          />
-                          {item}
-                        </ValidationMessage>
-                      );
-                    })}
-                  </ValidationContainer>
-                ) : null}
-              </FieldContainer>
-              <FieldContainer>
-                <p>Date of Birth:</p>
-                <Field
-                  type="date"
-                  name="dob"
-                  value={values.dob}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {touched.dob ? (
-                  <ValidationContainer
-                    color={errors.dob && touched.dob ? "#959595" : "#29A643"}
-                  >
-                    {validationsArray[2].map((item, idx) => {
-                      return (
-                        <ValidationMessage key={idx}>
-                          <FontAwesomeIcon
-                            icon={faCircleDot}
-                            style={{ width: "9px", height: "9px" }}
-                          />
-                          {item}
-                        </ValidationMessage>
-                      );
-                    })}
-                  </ValidationContainer>
-                ) : null}
-              </FieldContainer>
-            </Fields>
-            <Fields>
-              <FieldContainer>
-                <p>Email:</p>
-                <Field
-                  placeholder="Email"
-                  name="email"
-                  type="text"
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {touched.email ? (
-                  <ValidationContainer
-                    color={
-                      errors.email && touched.email ? "#959595" : "#29A643"
-                    }
-                  >
-                    {validationsArray[3].map((item, idx) => {
-                      return (
-                        <ValidationMessage key={idx}>
-                          <FontAwesomeIcon
-                            icon={faCircleDot}
-                            style={{ width: "9px", height: "9px" }}
-                          />
-                          {item}
-                        </ValidationMessage>
-                      );
-                    })}
-                  </ValidationContainer>
-                ) : null}
-              </FieldContainer>
-              <FieldContainer>
-                <p>Password:</p>
-                <Field
-                  type="text"
-                  placeholder="Password"
-                  name="password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {touched.password ? (
-                  <ValidationContainer
-                    color={
-                      errors.password && touched.password
-                        ? "#959595"
-                        : "#29A643"
-                    }
-                  >
-                    {validationsArray[0].map((item, idx) => {
-                      return (
-                        <ValidationMessage key={idx}>
-                          <FontAwesomeIcon
-                            icon={faCircleDot}
-                            style={{ width: "9px", height: "9px" }}
-                          />
-                          {item}
-                        </ValidationMessage>
-                      );
-                    })}
-                  </ValidationContainer>
-                ) : null}
-              </FieldContainer>
-            </Fields>
-            <Btn
-              type="submit"
-              onClick={() => {
-                setCurrentStep(1);
-              }}
-            >
-              {buttonSteps[currentStep].text}
-            </Btn>
-          </CustomForm>
-        )}
-      </Formik>
+      {currentStep !== 2 ? (
+        <Formik
+          validationSchema={userSchema}
+          initialValues={{ fullName: "", dob: "", email: "", password: "" }}
+          onSubmit={() => {}}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+          }) => (
+            <CustomForm>
+              {currentStep === 0 ? (
+                <Fields>
+                  <FieldContainer>
+                    <p>Full Name:</p>
+                    <Field
+                      placeholder="Full Name"
+                      name="fullName"
+                      type="text"
+                      value={values.fullName}
+                      onChange={(e) => {
+                        handleChange(e);
+                        setLineStep(1);
+                      }}
+                      onBlur={handleBlur}
+                    />
+                    {touched.fullName ? (
+                      <ValidationContainer
+                        color={
+                          errors.fullName && touched.fullName
+                            ? "#959595"
+                            : "#29A643"
+                        }
+                      >
+                        {validationsArray[1].map((item, idx) => {
+                          return (
+                            <ValidationMessage key={idx}>
+                              <FontAwesomeIcon
+                                icon={faCircleDot}
+                                style={{ width: "9px", height: "9px" }}
+                              />
+                              {item}
+                            </ValidationMessage>
+                          );
+                        })}
+                      </ValidationContainer>
+                    ) : null}
+                  </FieldContainer>
+                  <FieldContainer>
+                    <p>Date of Birth:</p>
+                    <Field
+                      type="date"
+                      name="dob"
+                      value={values.dob}
+                      onChange={(e) => {
+                        handleChange(e);
+                        setLineStep(1);
+                      }}
+                      onBlur={handleBlur}
+                    />
+                    {touched.dob ? (
+                      <ValidationContainer
+                        color={
+                          errors.dob && touched.dob ? "#959595" : "#29A643"
+                        }
+                      >
+                        {validationsArray[2].map((item, idx) => {
+                          return (
+                            <ValidationMessage key={idx}>
+                              <FontAwesomeIcon
+                                icon={faCircleDot}
+                                style={{ width: "9px", height: "9px" }}
+                              />
+                              {item}
+                            </ValidationMessage>
+                          );
+                        })}
+                      </ValidationContainer>
+                    ) : null}
+                  </FieldContainer>
+                </Fields>
+              ) : (
+                <Fields>
+                  <FieldContainer>
+                    <p>Email:</p>
+                    <Field
+                      placeholder="Email"
+                      name="email"
+                      type="text"
+                      value={values.email}
+                      onChange={(e) => {
+                        handleChange(e);
+                        setLineStep(3);
+                      }}
+                      onBlur={handleBlur}
+                    />
+                    {touched.email ? (
+                      <ValidationContainer
+                        color={
+                          errors.email && touched.email ? "#959595" : "#29A643"
+                        }
+                      >
+                        {validationsArray[3].map((item, idx) => {
+                          return (
+                            <ValidationMessage key={idx}>
+                              <FontAwesomeIcon
+                                icon={faCircleDot}
+                                style={{ width: "9px", height: "9px" }}
+                              />
+                              {item}
+                            </ValidationMessage>
+                          );
+                        })}
+                      </ValidationContainer>
+                    ) : null}
+                  </FieldContainer>
+                  <FieldContainer>
+                    <p>Password:</p>
+                    <Field
+                      type="text"
+                      placeholder="Password"
+                      name="password"
+                      value={values.password}
+                      onChange={(e) => {
+                        handleChange(e);
+                        setLineStep(3);
+                      }}
+                      onBlur={handleBlur}
+                    />
+                    {touched.password ? (
+                      <ValidationContainer
+                        color={
+                          errors.password && touched.password
+                            ? "#959595"
+                            : "#29A643"
+                        }
+                      >
+                        {validationsArray[0].map((item, idx) => {
+                          return (
+                            <ValidationMessage key={idx}>
+                              <FontAwesomeIcon
+                                icon={faCircleDot}
+                                style={{ width: "9px", height: "9px" }}
+                              />
+                              {item}
+                            </ValidationMessage>
+                          );
+                        })}
+                      </ValidationContainer>
+                    ) : null}
+                  </FieldContainer>
+                </Fields>
+              )}
+
+              <Btn
+                disabled={
+                  currentStep === 0
+                    ? errors.fullName ||
+                      errors.dob ||
+                      !touched.fullName ||
+                      !touched.dob
+                      ? true
+                      : false
+                    : currentStep === 1
+                    ? errors.email || errors.password
+                      ? true
+                      : false
+                    : false
+                }
+                type="submit"
+                onClick={() => {
+                  setCurrentStep(currentStep + 1);
+                  if (currentStep === 0) {
+                    setLineStep(2);
+                  } else if (currentStep === 1) {
+                    setLineStep(4);
+                  }
+                }}
+              >
+                {buttonSteps[currentStep].text}
+              </Btn>
+            </CustomForm>
+          )}
+        </Formik>
+      ) : (
+        <SuccessContainer>
+          <SuccessTitle>
+            <FontAwesomeIcon
+              icon={faCircleCheck}
+              style={{ width: "52px", height: "52px" }}
+            />
+            Registration Successful
+          </SuccessTitle>
+          <SuccessMsg>
+            <FontAwesomeIcon
+              icon={faPlay}
+              style={{ width: "7px", height: "7px" }}
+            />
+            Thank you for registering for our event with XM. You will receive an
+            email shortly with confirmation of your registration.
+          </SuccessMsg>
+        </SuccessContainer>
+      )}
+      <SmallTextContainer>
+        <p style={{ fontSize: "14px" }}>
+          Don’t have an account?{" "}
+          <span style={{ color: "#D51820", textDecoration: "underline" }}>
+            Create one here
+          </span>{" "}
+          and register for the event
+        </p>
+        <p style={{ fontSize: "12px" }}>
+          Terms and Conditions apply*. To read the full T&Cs, click{" "}
+          <span style={{ color: "#D51820", textDecoration: "underline" }}>
+            here
+          </span>
+          .
+        </p>
+      </SmallTextContainer>
     </Container>
   );
 };
