@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
+import { useWindowSize } from "usehooks-ts";
 
 const Container = styled.div`
   width: 100%;
@@ -10,17 +11,23 @@ const Container = styled.div`
   align-items: center;
   padding: 2rem;
   color: #fff;
-  background: linear-gradient(
+  background: ${({ screenSize }) =>
+    screenSize > 768
+      ? `linear-gradient(
       180deg,
       rgba(32, 46, 71, 0.65) 36.53%,
       rgba(32, 46, 71, 0.6175) 57.69%,
       rgba(32, 46, 71, 0.585) 78.84%,
       rgba(32, 46, 71, 0) 100%
     ),
-    url("/images/heroBg.png");
-  background-position: center;
+    url("/images/heroBg.png")`
+      : `linear-gradient(180deg, rgba(32, 46, 71, 0.65) 36.53%, rgba(32, 46, 71, 0.6175) 57.69%, rgba(32, 46, 71, 0.585) 78.84%, rgba(32, 46, 71, 0) 100%),
+url("/images/heroBgMob.png")`};
+  background-position: ${({ screenSize }) =>
+    screenSize > 768 ? "center" : "top"};
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: ${({ screenSize }) =>
+    screenSize > 768 ? "cover" : "contain"};
 `;
 
 const Content = styled.div`
@@ -83,8 +90,9 @@ const TermsLink = styled(Link)`
 `;
 
 const Hero = () => {
+  const { width } = useWindowSize();
   return (
-    <Container>
+    <Container screenSize={width}>
       <Content>
         <FirstTextLine>TRADE WITH</FirstTextLine>
         <Title>
