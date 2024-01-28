@@ -425,6 +425,7 @@ const MultiStepForm = () => {
                         setLineStep(1);
                       }}
                       onBlur={handleBlur}
+                      style={{ minWidth: "96%" }}
                     />
                     {touched.dob ? (
                       <ValidationContainer
