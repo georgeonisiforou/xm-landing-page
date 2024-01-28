@@ -36,6 +36,10 @@ const Boxes = styled.div`
 
   & div:last-child {
     border-right: none;
+
+    @media (max-width: 400px) {
+      border-bottom: none;
+    }
   }
 `;
 

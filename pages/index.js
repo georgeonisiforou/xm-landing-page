@@ -12,6 +12,27 @@ import Footer from "@/components/Footer";
 
 const MainContainer = styled.div`
   width: 100%;
+  position: relative;
+`;
+
+const GreenWorm = styled.div`
+  position: absolute;
+  top: 0%;
+  right: 15%;
+  width: 100%;
+  max-width: 1067px;
+  height: 1210px;
+  z-index: -1;
+`;
+
+const PurpleZero = styled.div`
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 100%;
+  max-width: 590px;
+  height: 727px;
+  z-index: -1;
 `;
 
 export default function Home() {
@@ -25,9 +46,24 @@ export default function Home() {
       </Head>
       <>
         <Header />
-
         <Hero />
         <MainContainer>
+          <GreenWorm>
+            <Image
+              alt="green vector"
+              src={"/images/greenWorm.png"}
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </GreenWorm>
+          <PurpleZero>
+            <Image
+              alt="purple zero"
+              src={"/images/purpleZero.png"}
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </PurpleZero>
           <Cryptos />
           <WhyTrade />
           <Registration />
