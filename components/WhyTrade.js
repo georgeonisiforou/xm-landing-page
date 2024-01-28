@@ -90,6 +90,7 @@ const WhyTrade = () => {
       <Title>
         Why <span style={{ fontWeight: "600" }}>Trade</span> with XM?
       </Title>
+      <GreenLine />
       <Sub>
         We have been providing traders around the world with the same{" "}
         <span style={{ fontWeight: "700" }}>premium experience</span> for over a

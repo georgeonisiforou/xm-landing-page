@@ -28,6 +28,7 @@ const Boxes = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: 3rem;
 
   & div:first-child {
     border-left: none;

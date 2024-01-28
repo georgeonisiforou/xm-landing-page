@@ -8,6 +8,7 @@ import WhyTrade from "@/components/WhyTrade";
 import Registration from "@/components/Registration";
 import EventGallery from "@/components/EventGallery";
 import Features from "@/components/Features";
+import Footer from "@/components/Footer";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -24,15 +25,16 @@ export default function Home() {
       </Head>
       <>
         <Header />
+
+        <Hero />
         <MainContainer>
-          <Hero />
           <Cryptos />
           <WhyTrade />
-
           <Registration />
-          <EventGallery />
-          <Features />
         </MainContainer>
+        <EventGallery />
+        <Features />
+        <Footer />
       </>
     </>
   );
