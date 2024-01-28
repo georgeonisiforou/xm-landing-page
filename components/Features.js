@@ -106,6 +106,7 @@ const Text = styled.p`
 
   @media (max-width: 768px) {
     text-align: center;
+    padding: 0 1.5rem;
   }
 `;
 
