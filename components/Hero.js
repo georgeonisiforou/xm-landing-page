@@ -15,13 +15,13 @@ const Container = styled.div`
     screenSize > 768
       ? `linear-gradient(
       180deg,
-      rgba(32, 46, 71, 0.65) 36.53%,
-      rgba(32, 46, 71, 0.6175) 57.69%,
+      rgba(32, 46, 71, 0.2) 36.53%,
+      rgba(32, 46, 71, 0.3) 57.69%,
       rgba(32, 46, 71, 0.585) 78.84%,
       rgba(32, 46, 71, 0) 100%
     ),
     url("/images/heroBg.png")`
-      : `linear-gradient(180deg, rgba(32, 46, 71, 0.65) 36.53%, rgba(32, 46, 71, 0.6175) 57.69%, rgba(32, 46, 71, 0.585) 78.84%, rgba(32, 46, 71, 0) 100%),
+      : `linear-gradient(180deg, rgba(32, 46, 71, 0.2) 36.53%, rgba(32, 46, 71, 0.30) 57.69%, rgba(32, 46, 71, 0.585) 78.84%, rgba(32, 46, 71, 0) 100%),
 url("/images/heroBgMob.png")`};
   background-position: ${({ screenSize }) =>
     screenSize > 768 ? "center" : "top"};

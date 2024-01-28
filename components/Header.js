@@ -11,6 +11,7 @@ const Container = styled.div`
   justify-content: ${({ screenSize }) =>
     screenSize > 768 ? "space-between" : "center"};
   align-items: center;
+  background-color: #000;
 `;
 
 const LogoContainer = styled.div`
